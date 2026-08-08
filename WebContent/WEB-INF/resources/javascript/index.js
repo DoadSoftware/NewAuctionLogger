@@ -100,19 +100,11 @@ function processUserSelection(whichInput)
 			}
 		break;	
 	case 'load_scene_btn':
-		/*if(checkEmpty($('#vizIPAddress'),'IP Address Blank') == false
-			|| checkEmpty($('#vizPortNumber'),'Port Number Blank') == false) {
-			return false;
-		}*/
 	  	document.initialise_form.submit();
 		break;
 	case 'selectedBroadcaster':
 		switch ($('#selectedBroadcaster :selected').val()) {
 		case 'HANDBALL':
-			//$('#vizPortNumber').attr('value','1980');
-			//$('label[for=vizScene], input#vizScene').hide();
-			//$('label[for=which_scene], select#which_scene').hide();
-			//$('label[for=which_layer], select#which_layer').hide();
 			break;
 		}
 		break;
@@ -156,7 +148,6 @@ function processUserSelection(whichInput)
 		processAuctionProcedures('UNDO_PLAYERS',null);
 		break;
 	default:
-	console.log($('#selectedBroadcaster').val().toUpperCase());
 		switch ($(whichInput).attr('id')) {
 		case 'player_auction': case 'select_player':
 			addItemsToList('LOAD_' + $(whichInput).attr('id').toUpperCase(),session_auction);
@@ -196,7 +187,7 @@ function processAuctionProcedures(whatToProcess, whichInput)
 
 	$.ajax({    
         type : 'Get',     
-        url : 'processAuctionProcedures',     
+        url : 'processAuctionProcedures.html',     
         data : {
 			    whatToProcess: whatToProcess,
 			    valueToProcess: value_to_process
@@ -247,7 +238,6 @@ function addItemsToList(whatToProcess, dataToProcess)
 	    $('#auction_div').empty();
 	    var style = document.createElement('style');
 	    style.innerHTML = `
-	        /* General table styling */
 	        .table {
 	            width: 100%;
 	            margin: 15px 0;
@@ -256,61 +246,44 @@ function addItemsToList(whatToProcess, dataToProcess)
 	            border-radius: 8px;
 	            overflow-x: hidden;
 	        }
-	
 	        .table th, .table td {
-	            padding: 8px 10px;  /* Reduced padding */
+	            padding: 8px 10px;
 	            text-align: left;
 	            border-bottom: 1px solid #ddd;
 	            word-wrap: break-word;
 	            white-space: normal;
-	            font-size: 13px;  /* Reduced font size */
-	            line-height: 1.3;  /* Reduced line height to decrease row height */
+	            font-size: 13px;
+	            line-height: 1.3;
 	        }
-	
-	        /* Styling table header */
 	        .table th {
 	            background-color: #ff5733;
 	            color: white;
 	            font-weight: bold;
 	            text-transform: uppercase;
 	        }
-	
-	        /* Hover effect for rows */
 	        .table tr:hover {
 	            background-color: #ffe6e6;
 	        }
-	
-	        /* Styling the label (text inside table cells) */
 	        .table label {
 	            font-size: 13px;
 	            font-weight: normal;
 	            color: #333;
 	            display: block;
-	            margin-bottom: 4px;  /* Reduced margin */
+	            margin-bottom: 4px;
 	        }
-	
-	        /* Specific style for the first table (Auction Info) */
 	        #auction_div table:first-of-type {
 	            margin-bottom: 15px;
 	            background-color: #00FFFF;
 	        }
-	
-	        /* Styling for the teams and players table */
 	        #auction_div table:nth-of-type(2) {
 	            background-color: #ADD8E6;
 	        }
-	
-	        /* Styling for the third table (Team Zones) */
 	        #auction_div table:nth-of-type(3) {
 	            background-color: #f8bbd0;
 	        }
-	
-	        /* Styling for the fourth table */
 	        #auction_div table:nth-of-type(4) {
 	            background-color: #fff9c4 !important;
 	        }
-	
-	        /* Style for the auction content */
 	        #auction_div {
 	            padding: 15px;
 	            background-color: #f7f7f7;
@@ -319,57 +292,41 @@ function addItemsToList(whatToProcess, dataToProcess)
 	            max-width: 100%;
 	            overflow-x: hidden;
 	        }
-	
-	        /* Style for the auction labels */
 	        #auction_div label {
 	            font-size: 14px;
 	            font-weight: bold;
 	            color: #007BFF;
 	        }
-	
-	        /* Style for empty cells */
 	        .table td:empty {
 	            background-color: #f9f9f9;
 	        }
-	
-	       /* Styling for Team Zone table */
 			.zone-table th {
-			    background-color: #9ACD32 !important; /* Ensures it overrides other hover styles */
+			    background-color: #9ACD32 !important;
 			    color: white !important;
 			    font-weight: bold;
 			    text-transform: uppercase;
 			}
-			
 			.zone-table td {
 			    background-color: #fff;
 			    color: #333;
 			    font-size: 13px;
 			}
-			
-			/* Hover effect only for tbody rows, NOT thead */
 			.zone-table tbody tr:hover td {
 			    background-color: #e0f7fa !important;
 			    color: #000 !important;
 			}
-			
-			/* Prevent header (thead) row from changing color on hover */
 			.zone-table thead tr:hover th {
 			    background-color: #007BFF !important;
 			    color: white !important;
 			}
-
-	
-	        /* Style for small screens */
 	        @media (max-width: 768px) {
 	            .table th, .table td {
 	                font-size: 12px;
-	                padding: 6px 8px;  /* Further reduce padding for small screens */
+	                padding: 6px 8px;
 	            }
-	
 	            #auction_div {
 	                padding: 10px;
 	            }
-	
 	            .table, .zone-table {
 	                font-size: 12px;
 	            }
@@ -380,8 +337,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 	
 	    if (dataToProcess) {
 	        let table, tbody, row, text;
-	
-	        // Create the first table (Select Player)
+
 	        table = document.createElement('table');
 	        table.setAttribute('class', 'table table-bordered');
 	        tbody = document.createElement('tbody');
@@ -412,9 +368,8 @@ function addItemsToList(whatToProcess, dataToProcess)
 	        }
 	        table.appendChild(tbody);
 	        document.getElementById('auction_div').appendChild(table);
-	
-	        // Teams and Players table
-	        table = document.createElement('table');
+
+	       table = document.createElement('table');
 	        table.setAttribute('class', 'table table-bordered');
 	        tbody = document.createElement('tbody');
 	        row = tbody.insertRow(tbody.rows.length);
@@ -462,25 +417,21 @@ function addItemsToList(whatToProcess, dataToProcess)
 	        document.getElementById('auction_div').appendChild(table);
 	        Category = ["central zone", "east zone", "north zone", "south zone", "west zone", "u19"]
 					.includes(dataToProcess.playersList[0].category.toLowerCase());
-			// Create flex container for the last two tables
 			let flexContainer = document.createElement('div');
 			flexContainer.style.display = 'flex';
 			flexContainer.style.justifyContent = 'space-between';
-			flexContainer.style.gap = '20px'; // Optional spacing between tables
-			flexContainer.style.flexWrap = 'wrap'; // Responsive fallback
-			
-			// ========== Team Zones Table ==========
+			flexContainer.style.gap = '20px';
+			flexContainer.style.flexWrap = 'wrap';
+
 			if (Category) {
 			    let zoneTable = document.createElement('table');
 			    zoneTable.setAttribute('class', 'table table-bordered table-hover zone-table');
 			    zoneTable.setAttribute('style', 'font-size: 1.55rem; background-color: #e0f7fa; width: 100%; max-width: 100%;');
-			
 			    let styleZone = document.createElement('style');
 			    styleZone.innerHTML = `
 			        .table-hover tbody tr:hover {
 			            background-color: #fff9c4 !important;
 			        }
-			
 			        .table-hover tbody tr:hover td {
 			            background-color: #fff9c4 !important;
 			            color: black !important;
@@ -492,45 +443,8 @@ function addItemsToList(whatToProcess, dataToProcess)
 			        }
 			    `;
 			    document.head.appendChild(styleZone);
-			
-			    /*tbody = document.createElement('tbody');
-			    row = tbody.insertRow(tbody.rows.length);
-			    row.classList.add('zone-header-row');
-			    row.innerHTML = `
-			        <th><strong>Team</strong></th>
-			        <th><strong>North Zone</strong></th>
-			        <th><strong>East Zone</strong></th>
-			        <th><strong>South Zone</strong></th>
-			        <th><strong>West Zone</strong></th>
-			        <th><strong>Central Zone</strong></th>
-			        <th><strong>U19</strong></th>
-			    `;
-			    for (let cell of row.cells) {
-			        cell.style.backgroundColor = '#219ebc';
-			        cell.style.color = 'white';
-			        cell.style.fontSize = '16px';
-			        cell.style.fontWeight = '800';
-			    }
-			
-			    for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
-			        row = tbody.insertRow(tbody.rows.length);
-			        row.style.fontSize = '16px';
-			        row.style.fontWeight = '800';
-			        row.style.color = '#BC8F8F';
-			        row.innerHTML = `
-			            <td>${dataToProcess.teamZoneList[i].teamName1}</td>
-			            <td>${dataToProcess.teamZoneList[i].northZone || 0}</td>
-			            <td>${dataToProcess.teamZoneList[i].eastZone || 0}</td>
-			            <td>${dataToProcess.teamZoneList[i].southZone || 0}</td>
-			            <td>${dataToProcess.teamZoneList[i].westZone || 0}</td>
-			            <td>${dataToProcess.teamZoneList[i].centralZone || 0}</td>
-			            <td>${dataToProcess.teamZoneList[i].u19 || 0}</td>
-			        `;
-			    }
-			    zoneTable.appendChild(tbody);
-			    flexContainer.appendChild(zoneTable);*/
 			}
-			
+
 			// ========== Purse and Team Table ==========
 			let purseTable = document.createElement('table');
 			purseTable.setAttribute('class', 'table table-bordered');
@@ -551,35 +465,43 @@ function addItemsToList(whatToProcess, dataToProcess)
 			    cell.style.fontSize = '16px';
 			}
 			
-			for (let i = 0; i < dataToProcess.team.length; i++) {
-			    row = tbody.insertRow(tbody.rows.length);
-			    row.style.fontSize = '16px';
-			    row.style.fontWeight = '800';
-			    row.style.color = 'black';
-			    row.insertCell(0).innerHTML = dataToProcess.teamZoneList[i].teamName1;
-			    row.insertCell(1).innerHTML = dataToProcess.teamZoneList[i].teamTotalPurse || 0;
-			    if (Category) {
-			        row.insertCell(2).innerHTML = dataToProcess.teamZoneList[i].purseRemaing || 0;
-			        row.insertCell(3).innerHTML = dataToProcess.teamZoneList[i].expectedPurse || 0;
-			    } else {
-			        row.insertCell(2).innerHTML = dataToProcess.teamZoneList[i].purseRemaing || 0;
+			if (dataToProcess.teamZoneList && dataToProcess.teamZoneList.length > 0) {
+
+			    for (let i = 0; i < dataToProcess.teamZoneList.length; i++) {
+
+			        let zone = dataToProcess.teamZoneList[i];
+
+			        row = tbody.insertRow(tbody.rows.length);
+
+			        row.style.fontSize = "16px";
+			        row.style.fontWeight = "800";
+			        row.style.color = "black";
+
+			        row.insertCell(0).innerHTML = zone.teamName;
+			        row.insertCell(1).innerHTML = zone.teamShortName;
+
+			        if (Category) {
+			            row.insertCell(2).innerHTML = zone.menPlayerCount;
+			            row.insertCell(3).innerHTML = zone.womenPlayerCount;
+			        } else {
+			            row.insertCell(2).innerHTML = zone.playerCount;
+			        }
 			    }
+			} else {
+			    console.error("teamZoneList is missing.", dataToProcess);
 			}
+
 			purseTable.appendChild(tbody);
 			flexContainer.appendChild(purseTable);
-			
-			// Add flex container to auction_div
+
 			flexContainer.classList.add("auction-flex-container");
 			document.getElementById('auction_div').appendChild(flexContainer);
-
 	    }
-	    break;
-	
+		break;
 	case 'LOAD_UNSOLD_PLAYERS': {
 
 		    $('#select_event_div').empty();
-		
-		    // ✅ MAIN CONTAINER (FLEX)
+
 		    let mainContainer = document.createElement('div');
 		    mainContainer.style.display = 'flex';
 		    mainContainer.style.alignItems = 'flex-start';
@@ -864,36 +786,36 @@ function addItemsToList(whatToProcess, dataToProcess)
 		tbody = document.createElement('tbody');
 		row = tbody.insertRow(tbody.rows.length);
 		
-		//let ply = document.createElement('select');
-		//ply.id = 'selectPlayers';
-		//ply.name = ply.id;
-		//ply.style.fontWeight = "800";  
-		//ply.style.fontSize = "16px";  
+		let ply = document.createElement('select');
+		ply.id = 'selectPlayers';
+		ply.name = ply.id;
+		ply.style.fontWeight = "800";  
+		ply.style.fontSize = "16px";  
 		
-		/*option = document.createElement('option');
+		option = document.createElement('option');
 		option.value = '';
-	    option.text = '';
-	    select.appendChild(option);*/
-		/*session_auction.playersList.forEach(function(plyr,index,arr1){
-			option = document.createElement('option');
-			option.value = plyr.playerId;
-			option.text = plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category;
-			ply.appendChild(option);
+		option.text = '';
+		ply.appendChild(option);
+		session_auction.playersList.forEach(function(plyr){
+		    option = document.createElement('option');
+		    option.value = plyr.playerId;
+		    option.text = plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category;
+		    ply.appendChild(option);
 		});
 		
 		header_text = document.createElement('label');
 		header_text.innerHTML = 'Players: '
 		header_text.htmlFor = ply.id;
-		//select.setAttribute('onchange',"processUserSelection(this)");
+		ply.setAttribute('onchange', "processUserSelection(this)");
 		ply.setAttribute('onchange', `
 		    const selectedPlayerId = this.value;
 		    const selectedPlayer = session_auction.playersList.find(plyr => plyr.playerId == selectedPlayerId);
 		    if (selectedPlayer) {
 					document.getElementById('player_base_rupess').value = selectedPlayer.basePrice;	
 		    }
-		`);*/
+		`);
 				
-		//row.insertCell(0).appendChild(header_text).appendChild(ply);
+		row.insertCell(0).appendChild(header_text).appendChild(ply);
 
 	switch ($('#selectedBroadcaster').val().toUpperCase()) {
 		case 'WPL':
@@ -971,10 +893,6 @@ function addItemsToList(whatToProcess, dataToProcess)
 			plye.style.fontWeight = "800";  
 			plye.style.fontSize = "16px";  
 			
-			/*option = document.createElement('option');
-			option.value = '';
-		    option.text = '';
-		    select.appendChild(option);*/
 			getAvailablePlayers().forEach(function(plyr,index,arr1){
 				option = document.createElement('option');
 				option.value = plyr.playerId;
@@ -985,7 +903,6 @@ function addItemsToList(whatToProcess, dataToProcess)
 			header_text = document.createElement('label');
 			header_text.innerHTML = 'Players: '
 			header_text.htmlFor = plye.id;
-			//select.setAttribute('onchange',"processUserSelection(this)");
 			plye.setAttribute('onchange', `
 			    const selectedPlayerId = this.value;
 			    const selectedPlayer = session_auction.playersList.find(plyr => plyr.playerId == selectedPlayerId);
@@ -1496,16 +1413,19 @@ function checkEmpty(inputBox,textToShow) {
 }	
 
 function getAvailablePlayers() {
-    let excludedIds = new Set();
+    if (!session_auction || !Array.isArray(session_auction.playersList)) {
+        return [];
+    }
 
-    if (session_auction.players) {
-        session_auction.players.forEach(p => {
+    let excludedIds = new Set();
+    const players = session_auction.players || [];
+
+    if (players.length) {
+        players.forEach(p => {
             const status = (p.soldOrUnsold || "").toUpperCase();
 
-            // Skip BID players
             if (status === "BID") return;
 
-            // Exclude players with these statuses
             if (["RTM", "SOLD", "UNSOLD", "RETAIN"].includes(status)) {
                 if (p.playersId) {
                     p.playersId.split(',').forEach(id => excludedIds.add(id.trim()));
@@ -1519,8 +1439,7 @@ function getAvailablePlayers() {
     return session_auction.playersList.filter(p => {
         const isExcluded = excludedIds.has(String(p.playerId));
 
-        // Check if this player is currently on BID
-        const isLive = session_auction.players.some(ap => {
+        const isLive = players.some(ap => {
             const status = (ap.status || "").toUpperCase();
 
             if (status !== "BID") return false;

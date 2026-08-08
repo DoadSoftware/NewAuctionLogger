@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.auction.model.Auction;
 import com.auction.model.Player;
+import com.auction.model.Team;
 import com.auction.service.AuctionService;
 import com.auction.util.AuctionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +38,8 @@ public class IndexController
 	public static String session_selected_broadcaster;
 	public static boolean is_this_updating = false;
 	public static ObjectMapper objectMapper = new ObjectMapper();
+	List<Player> allPlayer = new ArrayList<Player>();
+	List<Team> allTeam = new ArrayList<Team>();
 	
 	@RequestMapping(value = {"/","/initialise"}, method={RequestMethod.GET,RequestMethod.POST}) 
 	public String initialisePage(ModelMap model) throws JAXBException, IOException, ParseException 
@@ -42,7 +47,8 @@ public class IndexController
 		if(current_date == null || current_date.isEmpty()) {
 			current_date = AuctionFunctions.getOnlineCurrentDate();
 		}
-		
+		allPlayer = auctionService.getAllPlayer();
+		allTeam = auctionService.getTeams();
 		return "initialise";
 	}
 	@RequestMapping(value = {"/auction"}, method={RequestMethod.GET,RequestMethod.POST}) 
@@ -73,18 +79,17 @@ public class IndexController
 			if(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON).exists()) {
 				session_auction = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + 
 						AuctionUtil.AUCTION_JSON), Auction.class);
-				session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+				session_auction = AuctionFunctions.populateMatchVariables(session_auction, allPlayer, allTeam);
 				session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(), 
 						session_auction.getPlayers(), session_auction.getPlayersList(),session_selected_broadcaster.toUpperCase()));
 
 			}
-			
 			model.addAttribute("session_selected_broadcaster", session_selected_broadcaster);
 			return "auction";
 		}
 	}
 	
-	@RequestMapping(value = {"/processAuctionProcedures"}, method={RequestMethod.GET,RequestMethod.POST})    
+	@RequestMapping(value = {"/processAuctionProcedures.html"}, method={RequestMethod.GET,RequestMethod.POST})    
 	public @ResponseBody String processAuctionProcedures(
 			@RequestParam(value = "whatToProcess", required = false, defaultValue = "") String whatToProcess,
 			@RequestParam(value = "valueToProcess", required = false, defaultValue = "") String valueToProcess)
@@ -183,13 +188,13 @@ public class IndexController
 					
 					session_auction.getPlayers().removeIf(plyr -> plyr.getPlayerId() == Integer.valueOf(valueToProcess.split(",")[0]));
 					
-					Player ply = auctionService.getAllPlayer().get(Integer.valueOf(valueToProcess.split(",")[0])-1);
+					Player ply = allPlayer.get(Integer.valueOf(valueToProcess.split(",")[0])-1);
 					
 					
 					session_auction.getPlayers().add(new Player(ply.getPlayerId(),ply.getPlayerNumber(),ply.getFull_name(),
 							ply.getTicker_name(),ply.getCategory(), ply.getNationality(),ply.getPhotoName(), 0, 
 							Integer.valueOf(valueToProcess.split(",")[1] + "000"),AuctionUtil.BID,ply.getDraft(),ply.getBasePrice(),ply.getPair(), ply.getGender(), ""));
-
+					session_auction.setPlayersList(allPlayer);
 					break;
 				}
 				break;
@@ -293,7 +298,7 @@ public class IndexController
 			}
 			new ObjectMapper().writeValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON), 
 					session_auction);
-			session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+			session_auction = AuctionFunctions.populateMatchVariables(session_auction, allPlayer, allTeam);
 			session_auction.setTeamZoneList(AuctionFunctions.PlayerCountPerTeamZoneWise(session_auction.getTeam(), 
 					session_auction.getPlayers(), session_auction.getPlayersList(),session_selected_broadcaster.toUpperCase()));
 			
@@ -303,10 +308,10 @@ public class IndexController
 			if(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON).exists()) {
 				session_auction = new ObjectMapper().readValue(new File(AuctionUtil.AUCTION_DIRECTORY + 
 						AuctionUtil.AUCTION_JSON), Auction.class);
-				session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+				session_auction = AuctionFunctions.populateMatchVariables(session_auction, allPlayer, allTeam);
 
 			}else {
-				session_auction = AuctionFunctions.populateMatchVariables(auctionService, session_auction);
+				session_auction = AuctionFunctions.populateMatchVariables(session_auction, allPlayer, allTeam);
 
 				new ObjectMapper().writeValue(new File(AuctionUtil.AUCTION_DIRECTORY + AuctionUtil.AUCTION_JSON), 
 						session_auction);
