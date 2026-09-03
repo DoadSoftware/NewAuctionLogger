@@ -477,16 +477,17 @@ function addItemsToList(whatToProcess, dataToProcess)
 			        row.style.fontWeight = "800";
 			        row.style.color = "black";
 
-			        row.insertCell(0).innerHTML = zone.teamName;
-			        row.insertCell(1).innerHTML = zone.teamShortName;
+			        row.insertCell(0).innerHTML = zone.teamName1;
+
+			        row.insertCell(1).innerHTML = zone.teamTotalPurse;
+
+			        row.insertCell(2).innerHTML = zone.purseRemaing;
 
 			        if (Category) {
-			            row.insertCell(2).innerHTML = zone.menPlayerCount;
-			            row.insertCell(3).innerHTML = zone.womenPlayerCount;
-			        } else {
-			            row.insertCell(2).innerHTML = zone.playerCount;
+			            row.insertCell(3).innerHTML = zone.expectedPurse;
 			        }
 			    }
+
 			} else {
 			    console.error("teamZoneList is missing.", dataToProcess);
 			}
@@ -786,7 +787,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		tbody = document.createElement('tbody');
 		row = tbody.insertRow(tbody.rows.length);
 		
-		let ply = document.createElement('select');
+		/*let ply = document.createElement('select');
 		ply.id = 'selectPlayers';
 		ply.name = ply.id;
 		ply.style.fontWeight = "800";  
@@ -815,7 +816,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		    }
 		`);
 				
-		row.insertCell(0).appendChild(header_text).appendChild(ply);
+		row.insertCell(0).appendChild(header_text).appendChild(ply);*/
 
 	switch ($('#selectedBroadcaster').val().toUpperCase()) {
 		case 'WPL':

@@ -139,8 +139,9 @@
         <div class="form-group">
           <label for="selectedBroadcaster">Select Broadcaster</label>
           <select id="selectedBroadcaster" name="selectedBroadcaster" onchange="processUserSelection(this)">
+          <option value="HANDBALL">DOAD</option>
             <option value="WPL">WPL</option>
-            <option value="HANDBALL">DOAD</option>
+            
           </select>
         </div>
 
