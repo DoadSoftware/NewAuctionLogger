@@ -260,10 +260,10 @@ public class IndexController
 			            if (playerExists) {
 			            	session_auction.getPlayersList().stream().filter(existingPlayer -> existingPlayer.getPlayerId() == plyr.getPlayerId())
 			                .findFirst().ifPresent(existingPlayer -> {
-//			                    if ("ELITE".equalsIgnoreCase(plyr.getCategory())) {
-//			                        existingPlayer.setCategory("PRO");
-//			                        existingPlayer.setBasePrice("500");
-//			                    }
+			                    if ("ELITE".equalsIgnoreCase(plyr.getCategory())) {
+			                        existingPlayer.setCategory("PRO");
+			                        existingPlayer.setBasePrice("500");
+			                    }
 			                    existingPlayer.setSoldOrUnsold("");
 			                    existingPlayer.setTeamId(0);
 			                    existingPlayer.setSoldForPoints(0);
@@ -275,19 +275,19 @@ public class IndexController
 			            }
 			        }
 			        // reset and add back to auction pool
-//			        for (Player plyr : reAuctionPlayers) {
-//			        	if( plyr.getCategory().equalsIgnoreCase("ELITE"))   	{
-//			        		 plyr.setCategory("PRO");
-//			        		 plyr.setBasePrice("500");
-//			        	}
-//			        	 plyr.setSoldOrUnsold("");
-//				         plyr.setTeamId(0);
-//				         plyr.setSoldForPoints(0);
-//			        }
-//			        if (session_auction.getPlayersList() == null) {
-//			            session_auction.setPlayersList(new ArrayList<>());
-//			        }
-//			        session_auction.getPlayersList().addAll(reAuctionPlayers);
+			        for (Player plyr : reAuctionPlayers) {
+			        	if( plyr.getCategory().equalsIgnoreCase("ELITE"))   	{
+			        		 plyr.setCategory("PRO");
+			        		 plyr.setBasePrice("500");
+			        	}
+			        	 plyr.setSoldOrUnsold("");
+				         plyr.setTeamId(0);
+				         plyr.setSoldForPoints(0);
+			        }
+			        if (session_auction.getPlayersList() == null) {
+			            session_auction.setPlayersList(new ArrayList<>());
+			        }
+			        session_auction.getPlayersList().addAll(reAuctionPlayers);
 			    }
 			    break;
 				

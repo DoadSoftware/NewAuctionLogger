@@ -1174,23 +1174,23 @@ function addItemsToList(whatToProcess, dataToProcess)
 		    
 		    option = document.createElement('input');
 		    option.type = 'button';
-		    option.style.fontWeight = "bold";
+			option.name = 'player_unsold_btn';
+			option.value = 'Player Unsold';
+			option.style.fontWeight = "bold";
 			option.style.fontSize = "16px";
-			option.name = 'player_rtm_btn';
-			option.value = 'Player RTM';
 		    option.id = option.name;
 		    option.setAttribute('onclick','processUserSelection(this);');
 		    
 		    div = document.createElement('div');
 		    div.append(option);
 		    row.insertCell(3).appendChild(div);
-		    
-		    option = document.createElement('input');
+			
+			option = document.createElement('input');
 		    option.type = 'button';
-			option.name = 'player_unsold_btn';
-			option.value = 'Player Unsold';
-			option.style.fontWeight = "bold";
+		    option.style.fontWeight = "bold";
 			option.style.fontSize = "16px";
+			option.name = 'player_rtm_btn';
+			option.value = 'Player RTM';
 		    option.id = option.name;
 		    option.setAttribute('onclick','processUserSelection(this);');
 		    
@@ -1324,23 +1324,23 @@ function addItemsToList(whatToProcess, dataToProcess)
 		    
 		    option = document.createElement('input');
 		    option.type = 'button';
-		    option.style.fontWeight = "bold";
+			option.name = 'player_unsold_btn';
+			option.value = 'Player Unsold';
+			option.style.fontWeight = "bold";
 			option.style.fontSize = "16px";
-			option.name = 'player_rtm_btn';
-			option.value = 'Player RTM';
 		    option.id = option.name;
 		    option.setAttribute('onclick','processUserSelection(this);');
 		    
 		    div = document.createElement('div');
 		    div.append(option);
 		    row.insertCell(4).appendChild(div);
-		    
-		    option = document.createElement('input');
+			
+			option = document.createElement('input');
 		    option.type = 'button';
-			option.name = 'player_unsold_btn';
-			option.value = 'Player Unsold';
-			option.style.fontWeight = "bold";
+		    option.style.fontWeight = "bold";
 			option.style.fontSize = "16px";
+			option.name = 'player_rtm_btn';
+			option.value = 'Player RTM';
 		    option.id = option.name;
 		    option.setAttribute('onclick','processUserSelection(this);');
 		    
