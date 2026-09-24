@@ -32,7 +32,7 @@ public class IndexController
 	public static String expiry_date = "2026-12-31";
 	public static String current_date = "";
 	public static String error_message = "";
-	public static String plyrid = "", plyrnumber = "", plyrFullName = "", plyrTickerName = "", 
+	public static String plyrid = "", plyrnumber = "", plyrFullName = "", plyrTickerName = "", plyrDev = "", plyrMember = "",
 		plyrPhotoName = "", plyrNationality = "", plyrBasePrice = ""; 
 	public static Auction session_auction;
 	public static String session_selected_broadcaster;
@@ -124,7 +124,7 @@ public class IndexController
 				    // 3 → "300"
 				    int price = Integer.valueOf(parts[3] + "000");
 
-				    plyrid = ""; plyrnumber = ""; plyrFullName = ""; plyrTickerName = ""; plyrPhotoName = ""; plyrNationality = "";
+				    plyrid = ""; plyrnumber = ""; plyrFullName = ""; plyrTickerName = ""; plyrPhotoName = ""; plyrNationality = ""; plyrDev = ""; plyrMember = "";
 				    for (String pid : playerIds) {
 				        int playerId = Integer.valueOf(pid);
 				        // Remove if already exists
@@ -134,6 +134,9 @@ public class IndexController
 				        Player ply = auctionService.getAllPlayer().get(playerId - 1);
 				        
 				        plyrBasePrice = String.valueOf(ply.getBasePrice());
+				        plyrDev = String.valueOf(ply.getDevelopment());
+				        plyrMember = String.valueOf(ply.getMembers());
+				        
 				        
 				        if(plyrid.equalsIgnoreCase("") && plyrid.isEmpty()) {
 				        	plyrid = String.valueOf(ply.getPlayerId());
@@ -179,7 +182,7 @@ public class IndexController
 				 // Add player
 			        session_auction.getPlayers().add(
 			            new Player(0, plyrnumber, plyrFullName, plyrTickerName, category, plyrNationality, plyrPhotoName, 
-			            	0, price, AuctionUtil.BID, "", plyrBasePrice, pair, gender, plyrid));
+			            	0, price, AuctionUtil.BID, "", plyrBasePrice, pair, gender, plyrid,"", "","",""));
 
 				    break;
 				default:
@@ -193,7 +196,7 @@ public class IndexController
 					
 					session_auction.getPlayers().add(new Player(ply.getPlayerId(),ply.getPlayerNumber(),ply.getFull_name(),
 							ply.getTicker_name(),ply.getCategory(), ply.getNationality(),ply.getPhotoName(), 0, 
-							Integer.valueOf(valueToProcess.split(",")[1] + "000"),AuctionUtil.BID,ply.getDraft(),ply.getBasePrice(),ply.getPair(), ply.getGender(), ""));
+							Integer.valueOf(valueToProcess.split(",")[1] + "000"),AuctionUtil.BID,ply.getDraft(),ply.getBasePrice(),ply.getPair(), ply.getGender(), "", "", "",ply.getMembers(),ply.getDevelopment()));
 					session_auction.setPlayersList(allPlayer);
 					break;
 				}
