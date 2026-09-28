@@ -97,7 +97,7 @@ public class IndexController
 	{	
 		switch (whatToProcess.toUpperCase()) {
 		case AuctionUtil.SELECT_PLAYER: case AuctionUtil.PLAYER_SOLD: case AuctionUtil.PLAYER_UNSOLD: case AuctionUtil.PLAYER_REAUCTION:
-		case AuctionUtil.UNDO_PLAYERS: case AuctionUtil.PLAYER_OVERWRITE: case AuctionUtil.PLAYER_RTM: case "PLAYER_RETAIN":
+		case AuctionUtil.UNDO_PLAYERS: case AuctionUtil.PLAYER_OVERWRITE: case AuctionUtil.PLAYER_RTM: case "PLAYER_RETAIN": case "PLAYER_SIGNED":
 			switch(whatToProcess.toUpperCase()) {
 			case AuctionUtil.SELECT_PLAYER:
 				switch(session_selected_broadcaster.toUpperCase()) {
@@ -202,7 +202,7 @@ public class IndexController
 				}
 				break;
 			
-			case AuctionUtil.PLAYER_SOLD: case AuctionUtil.PLAYER_RTM: case "PLAYER_RETAIN":
+			case AuctionUtil.PLAYER_SOLD: case AuctionUtil.PLAYER_RTM: case "PLAYER_RETAIN": case "PLAYER_SIGNED":
 				if(session_auction.getPlayers() != null && session_auction.getPlayers().size() > 0) {
 					session_auction.getPlayers().get(session_auction.getPlayers().size() - 1).setTeamId(Integer.valueOf(valueToProcess.split(",")[1]));
 					session_auction.getPlayers().get(session_auction.getPlayers().size() - 1).setSoldForPoints(Integer.valueOf(valueToProcess.split(",")[2] + "000"));
@@ -215,6 +215,9 @@ public class IndexController
 						break;
 					case "PLAYER_RETAIN":
 						session_auction.getPlayers().get(session_auction.getPlayers().size() - 1).setSoldOrUnsold("RETAIN");
+						break;
+					case "PLAYER_SIGNED":
+						session_auction.getPlayers().get(session_auction.getPlayers().size() - 1).setSoldOrUnsold("SIGNED");
 						break;
 					}
 				}

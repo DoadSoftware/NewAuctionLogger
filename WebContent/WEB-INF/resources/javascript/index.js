@@ -136,6 +136,10 @@ function processUserSelection(whichInput)
 		processWaitingButtonSpinner('START_WAIT_TIMER');
 		processAuctionProcedures('PLAYER_RETAIN',null);
 		break;
+	case 'player_signed_btn':
+		processWaitingButtonSpinner('START_WAIT_TIMER');
+		processAuctionProcedures('PLAYER_SIGNED',null);
+		break;
 	case 'player_reauction':
 	    addItemsToList('LOAD_UNSOLD_PLAYERS', session_auction);
 	    document.getElementById('select_event_div').style.display = '';
@@ -176,7 +180,7 @@ function processAuctionProcedures(whatToProcess, whichInput)
 	case 'PLAYER_REAUCTION':
 	    value_to_process = whichInput;  
 	    break;
-	case 'PLAYER_SOLD': case 'PLAYER_UNSOLD': case 'PLAYER_RTM': case 'PLAYER_RETAIN':
+	case 'PLAYER_SOLD': case 'PLAYER_UNSOLD': case 'PLAYER_RTM': case 'PLAYER_RETAIN': case 'PLAYER_SIGNED':
 			value_to_process = $('#selectPlayers option:selected').val() + ',' + $('#selectTeams option:selected').val() + ',' + $('#player_sold_points').val();
 		break;
 	case 'PLAYER_OVERWRITE':
@@ -205,7 +209,7 @@ function processAuctionProcedures(whatToProcess, whichInput)
 				addItemsToList('LOAD_MATCH',data);
 				document.getElementById('select_event_div').style.display = 'none';
 				break;
-			case 'PLAYER_SOLD': case 'PLAYER_UNSOLD': case 'PLAYER_RTM': case 'PLAYER_RETAIN':
+			case 'PLAYER_SOLD': case 'PLAYER_UNSOLD': case 'PLAYER_RTM': case 'PLAYER_RETAIN': case 'PLAYER_SIGNED':
 				addItemsToList('LOAD_PLAYER_AUCTION',data);
 				addItemsToList('LOAD_MATCH',data);
 				document.getElementById('select_event_div').style.display = 'none';
@@ -1360,6 +1364,19 @@ function addItemsToList(whatToProcess, dataToProcess)
 		    div = document.createElement('div');
 		    div.append(option);
 		    row.insertCell(6).appendChild(div);
+			
+			option = document.createElement('input');
+		    option.type = 'button';
+			option.name = 'player_signed_btn';
+			option.value = 'Player Signed';
+			option.style.fontWeight = "bold";
+			option.style.fontSize = "16px";
+		    option.id = option.name;
+		    option.setAttribute('onclick','processUserSelection(this);');
+		    
+		    div = document.createElement('div');
+		    div.append(option);
+		    row.insertCell(7).appendChild(div);
 	
 			option = document.createElement('input');
 			option.type = 'button';
@@ -1375,7 +1392,7 @@ function addItemsToList(whatToProcess, dataToProcess)
 		    div = document.createElement('div');
 		    div.append(option);
 		    
-		    row.insertCell(7).appendChild(div);
+		    row.insertCell(8).appendChild(div);
 		    
 			table.appendChild(tbody);
 			document.getElementById('select_event_div').appendChild(table);
