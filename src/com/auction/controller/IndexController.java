@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.xml.bind.JAXBException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -290,16 +292,23 @@ public class IndexController
 				         plyr.setTeamId(0);
 				         plyr.setSoldForPoints(0);
 			        }
-			        if (session_auction.getPlayersList() == null) {
-			            session_auction.setPlayersList(new ArrayList<>());
-			        }
-			        session_auction.getPlayersList().addAll(reAuctionPlayers);
 			    }
 			    break;
 				
 			case AuctionUtil.UNDO_PLAYERS:
 				if(session_auction.getPlayers() != null && session_auction.getPlayers().size() > 0) {
-					session_auction.getPlayers().remove(session_auction.getPlayers().get(session_auction.getPlayers().size()-1));
+					Player removed = session_auction.getPlayers().remove(session_auction.getPlayers().size() - 1);
+
+					Set<Integer> undoIds = new HashSet<Integer>();
+					if (removed.getPlayersId() != null && !removed.getPlayersId().trim().isEmpty()) {
+						for (String id : removed.getPlayersId().split(",")) {
+							undoIds.add(Integer.valueOf(id.trim()));
+						}
+					} else {
+						undoIds.add(removed.getPlayerId());
+					}
+					resetPlayersInList(session_auction.getPlayersList(), undoIds);
+					resetPlayersInList(allPlayer, undoIds);
 				}
 				break;
 			
@@ -358,6 +367,18 @@ public class IndexController
 			
 		default:
 			return objectMapper.writeValueAsString(session_auction);
+			
+			
+		}
+	}
+	private void resetPlayersInList(List<Player> list, Set<Integer> ids) {
+		if (list == null) return;
+		for (Player p : list) {
+			if (ids.contains(p.getPlayerId())) {
+				p.setSoldOrUnsold("");
+				p.setTeamId(0);
+				p.setSoldForPoints(0);
+			}
 		}
 	}
 }

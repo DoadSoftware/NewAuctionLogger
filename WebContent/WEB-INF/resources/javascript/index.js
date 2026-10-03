@@ -1253,11 +1253,11 @@ function addItemsToList(whatToProcess, dataToProcess)
 					}
 			});
 			
-			session_auction.playersList.forEach(function(plyr,index,arr1){
-				option = document.createElement('option');
-				option.value = plyr.playerId;
-				option.text = plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category;
-				selct.appendChild(option);
+			getAvailablePlayers().forEach(function(plyr){
+			    option = document.createElement('option');
+			    option.value = plyr.playerId;
+			    option.text = plyr.playerNumber + ' - ' + plyr.full_name + ' - ' + plyr.category;
+			    selct.appendChild(option);
 			});
 			
 			header_text = document.createElement('label');
@@ -1435,40 +1435,34 @@ function getAvailablePlayers() {
         return [];
     }
 
-    let excludedIds = new Set();
-    const players = session_auction.players || [];
+    const HIDE_STATUSES = ["SOLD", "UNSOLD", "RTM", "RETAIN", "SIGNED"];
+    const norm = v => String(v == null ? "" : v).trim().toUpperCase();
+    const excludedIds = new Set();
 
-    if (players.length) {
-        players.forEach(p => {
-            const status = (p.soldOrUnsold || "").toUpperCase();
+    // 1) Players that have a final status in the "players" array
+    (session_auction.players || []).forEach(p => {
+        if (!HIDE_STATUSES.includes(norm(p.soldOrUnsold))) return;
 
-            if (status === "BID") return;
-
-            if (["RTM", "SOLD", "UNSOLD", "RETAIN"].includes(status)) {
-                if (p.playersId) {
-                    p.playersId.split(',').forEach(id => excludedIds.add(id.trim()));
-                } else {
-                    excludedIds.add(String(p.playerId));
-                }
-            }
-        });
-    }
-
-    return session_auction.playersList.filter(p => {
-        const isExcluded = excludedIds.has(String(p.playerId));
-
-        const isLive = players.some(ap => {
-            const status = (ap.status || "").toUpperCase();
-
-            if (status !== "BID") return false;
-
-            if (ap.playersId) {
-                return ap.playersId.split(',').map(id => id.trim()).includes(String(p.playerId));
-            }
-
-            return String(ap.playerId) === String(p.playerId);
-        });
-
-        return !isExcluded || isLive;
+        if (p.playersId) {
+            String(p.playersId).split(',').forEach(id => excludedIds.add(id.trim()));
+        } else {
+            excludedIds.add(String(p.playerId).trim());
+        }
     });
+
+    // 2) Players whose own status in "playersList" is one of those
+    session_auction.playersList.forEach(p => {
+        if (HIDE_STATUSES.includes(norm(p.soldOrUnsold))) {
+            excludedIds.add(String(p.playerId).trim());
+        }
+    });
+
+    // Only players with no such status are shown
+	const seen = new Set();
+	    return session_auction.playersList.filter(p => {
+	        const id = String(p.playerId).trim();
+	        if (excludedIds.has(id) || seen.has(id)) return false;
+	        seen.add(id);
+	        return true;
+	    });
 }
